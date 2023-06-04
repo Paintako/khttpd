@@ -199,7 +199,6 @@ static struct work_struct *create_work(struct socket *sk)
     INIT_WORK(&work->khttpd_work, http_server_worker);
 
     list_add(&work->list, &daemon.worker);
-    printk(MODULE_NAME ": create work successfully");
     return &work->khttpd_work;
 }
 
@@ -207,14 +206,12 @@ static void free_work(void)
 {
     struct http_request *l, *tar;
     /* cppcheck-suppress uninitvar */
-    printk(MODULE_NAME ": ready to free_work");
     list_for_each_entry_safe (tar, l, &daemon.worker, list) {
         kernel_sock_shutdown(tar->socket, SHUT_RDWR);
         flush_work(&tar->khttpd_work);
         sock_release(tar->socket);
         kfree(tar);
     }
-    printk(MODULE_NAME ": done_free_work");
 }
 
 int http_server_daemon(void *arg)
@@ -245,9 +242,7 @@ int http_server_daemon(void *arg)
             continue;
         }
         /* start server worker */
-        printk(MODULE_NAME ": before queue_work ...\n");
         queue_work(khttpd_wq, work);
-        printk(MODULE_NAME ": successly queue_work ...\n");
     }
 
     printk(MODULE_NAME ": daemon shutdown in progress...\n");

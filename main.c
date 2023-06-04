@@ -164,7 +164,6 @@ static int __init khttpd_init(void)
     param.listen_socket = listen_socket;
     khttpd_wq = alloc_workqueue(MODULE_NAME, 0, 0);
     http_server = kthread_run(http_server_daemon, &param, KBUILD_MODNAME);
-    printk(MODULE_NAME ": successfully init khttpd_init \n");
     if (IS_ERR(http_server)) {
         pr_err("can't start http server daemon\n");
         close_listen_socket(listen_socket);
