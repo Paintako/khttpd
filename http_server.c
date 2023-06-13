@@ -126,7 +126,7 @@ static bool handle_directory(struct http_request *request)
              "</style></head><body><table>\r\n");
     http_server_send(request->socket, buf, strlen(buf));
 
-    fp = filp_open("/home/paintako/", O_RDONLY | O_DIRECTORY, 0);
+    fp = filp_open(daemon.dir_path, O_RDONLY | O_DIRECTORY, 0);
     if (IS_ERR(fp)) {
         pr_info("Open file failed");
         return false;
@@ -141,16 +141,7 @@ static bool handle_directory(struct http_request *request)
 
 static int http_server_response(struct http_request *request, int keep_alive)
 {
-    // char *response;
-
     // pr_info("requested_url = %s\n", request->request_url);
-    // if (request->method != HTTP_GET)
-    //     response = keep_alive ? HTTP_RESPONSE_501_KEEPALIVE :
-    //     HTTP_RESPONSE_501;
-    // else
-    //     response = keep_alive ? HTTP_RESPONSE_200_KEEPALIVE_DUMMY
-    //                           : HTTP_RESPONSE_200_DUMMY;
-    // http_server_send(request->socket, response, strlen(response));
 
     if (handle_directory(request) == 0)
         printk("Something went wrong\n");
