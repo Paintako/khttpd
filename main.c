@@ -162,8 +162,8 @@ static void close_listen_socket(struct socket *socket)
 
 static int __init khttpd_init(void)
 {
-    if (!*WWWROOT)  // prevent empty input from user
-        WWWROOT[0] = '/';
+    // if (!*WWWROOT)  // prevent empty input from user
+    // WWWROOT[0] = '/';
     daemon.dir_path = WWWROOT;
 
     int err = open_listen_socket(port, backlog, &listen_socket);
