@@ -183,10 +183,10 @@ static bool handle_directory(struct http_request *request)
 
 static int http_server_response(struct http_request *request, int keep_alive)
 {
-    // pr_info("requested_url = %s\n", request->request_url);
+    pr_info("requested_url = %s\n", request->request_url);
 
     if (handle_directory(request) == 0)
-        printk("Something went wrong\n");
+        kernel_sock_shutdown(request->socket, SHUT_RDWR);
 
     return 0;
 }
