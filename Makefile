@@ -7,8 +7,9 @@ obj-m += khttpd.o
 khttpd-objs := \
 	http_parser.o \
 	http_server.o \
-	main.o
-
+	main.o \
+	content_cache.o
+	
 GIT_HOOKS := .git/hooks/applied
 all: $(GIT_HOOKS) http_parser.c htstress
 	make -C $(KDIR) M=$(PWD) modules

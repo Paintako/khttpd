@@ -6,6 +6,7 @@
 #include <linux/version.h>
 #include <net/sock.h>
 
+#include "content_cache.h"
 #include "http_server.h"
 
 #define DEFAULT_PORT 8081
@@ -172,6 +173,7 @@ static int __init khttpd_init(void)
         return err;
     }
     param.listen_socket = listen_socket;
+    init_content_cache_table();
     khttpd_wq = alloc_workqueue(MODULE_NAME, 0, 0);
     http_server = kthread_run(http_server_daemon, &param, KBUILD_MODNAME);
     if (IS_ERR(http_server)) {
@@ -187,6 +189,7 @@ static void __exit khttpd_exit(void)
     send_sig(SIGTERM, http_server, 1);
     kthread_stop(http_server);
     printk("kthread closed\n");
+    free_content_cache_table();
     close_listen_socket(listen_socket);
     destroy_workqueue(khttpd_wq);
     printk("destory finished\n");
